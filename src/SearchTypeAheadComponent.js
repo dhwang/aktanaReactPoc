@@ -11,20 +11,20 @@ export default function SearchTypeAheadComponent(props) {
     debugger;
     const { iteams } = props;
     let countries = [];
+    const debouncedFilter = debounce((value) => {
+      if (value.length > 0) {
+        const regex = new RegExp(`^${value}`, `i`);
+        countries = iteams.filter((v) => {
+          return v.name.common.includes(value);
+        });
+        setText(value);
+        setCountries(countries);
+      }
+    }, 60);
 
-    const value = e.target.value;
-
-    if (value.length > 0) {
-      const regex = new RegExp(`^${value}`, `i`);
-      countries = iteams.filter((v) => {
-        return v.name.common.includes(value);
-      });
-    }
+    debouncedFilter(e.target.value);
 
     console.log("Suggestions after filter", countries.length);
-
-    setText(value);
-    setCountries(countries);
   };
 
   const suggestionSelected = (value) => {
