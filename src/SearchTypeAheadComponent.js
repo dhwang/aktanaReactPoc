@@ -1,21 +1,19 @@
 import "./SearchTypeAheadDropDown.css";
 import React from "react";
+import debounce from "lodash.debounce";
+import { useState, useEffect } from "react";
 
-export default class SearchTypeAheadComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: "",
-      countries: [],
-    };
-  }
+export default function SearchTypeAheadComponent(props) {
+  const [text, setText] = useState("");
+  const [countries, setCountries] = useState([]);
 
-  onTextChange = (e) => {
-    const { iteams } = this.props;
+  const onTextChange = (e) => {
+    debugger;
+    const { iteams } = props;
     let countries = [];
 
-    debugger;
     const value = e.target.value;
+
     if (value.length > 0) {
       const regex = new RegExp(`^${value}`, `i`);
       countries = iteams.filter((v) => {
@@ -25,24 +23,18 @@ export default class SearchTypeAheadComponent extends React.Component {
 
     console.log("Suggestions after filter", countries.length);
 
-    this.setState(() => ({
-      text: value,
-      countries,
-    }));
+    setText(value);
+    setCountries(countries);
   };
 
-  suggestionSelected = (value) => {
-    this.setState(() => ({
-      text: value,
-      countries: [],
-    }));
+  const suggestionSelected = (value) => {
+    setText(value);
+    setCountries(countries);
   };
 
-  renderSuggestions = () => {
-    let countries = this.state.countries;
-
+  const renderSuggestions = (props) => {
     if (countries === undefined || countries.length === 0) {
-      const items = this.props.iteams;
+      const items = props.iteams;
     }
 
     console.log(" renderSuggestions countries :", countries);
@@ -54,7 +46,7 @@ export default class SearchTypeAheadComponent extends React.Component {
         {countries.map((country) => (
           <li
             key={country.name.common}
-            onClick={(e) => this.suggestionSelected(country.name.common)}
+            onClick={(e) => suggestionSelected(country.name.common)}
           >
             {country.name.common}
           </li>
@@ -63,19 +55,16 @@ export default class SearchTypeAheadComponent extends React.Component {
     );
   };
 
-  render() {
-    const { text } = this.state;
-    console.log("text looking for ", text);
-    return (
-      <div className="SearchAheadDropDown">
-        <input
-          onChange={this.onTextChange}
-          placeholder="Search Country name"
-          value={text}
-          type="text"
-        />
-        {this.renderSuggestions()}
-      </div>
-    );
-  }
+  console.log("text looking for ", text);
+  return (
+    <div className="SearchAheadDropDown">
+      <input
+        onChange={onTextChange}
+        placeholder="Search Country name"
+        value={text}
+        type="text"
+      />
+      {renderSuggestions(props)}
+    </div>
+  );
 }
