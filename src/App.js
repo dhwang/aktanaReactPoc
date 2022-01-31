@@ -26,7 +26,7 @@ export default function App() {
       );
   }, []);
 
-  debugger;
+  // debugger;
   return (
     <div className="App">
       <SearchTypeAheadComponent iteams={countries} />

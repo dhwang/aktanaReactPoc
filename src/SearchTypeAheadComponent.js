@@ -8,11 +8,11 @@ export default function SearchTypeAheadComponent(props) {
   const [countries, setCountries] = useState([]);
 
   const onTextChange = (e) => {
-    debugger;
+
     const { iteams } = props;
     let countries = [];
     const debouncedFilter = debounce((value) => {
-      if (value.length > 0) {
+      if (value.length > 2) {
         const regex = new RegExp(`^${value}`, `i`);
         countries = iteams.filter((v) => {
           return v.name.common.includes(value);
