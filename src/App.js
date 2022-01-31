@@ -4,7 +4,7 @@ import SearchTypeAheadComponent from "./SearchTypeAheadComponent";
 import { useState, useEffect } from "react";
 
 export default function App() {
-  const [text, setText] = useState(0);
+  const [text, setText] = useState('');
   const [countries, setCountries] = useState([]);
   // Similar to componentDidMount and componentDidUpdate:
 
